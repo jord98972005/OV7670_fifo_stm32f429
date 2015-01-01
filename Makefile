@@ -21,6 +21,7 @@ SRCS=main.c \
 	$(STM_COMMON)/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dma.c \
 	$(STM_COMMON)/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dma2d.c \
 	$(STM_COMMON)/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_fmc.c \
+	$(STM_COMMON)/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_exti.c \
 	$(STM_COMMON)/Libraries/STM32F4xx_StdPeriph_Driver/src/misc.c \
 	$(STM_COMMON)/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_flash.c \
 	$(STM_COMMON)/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_spi.c \

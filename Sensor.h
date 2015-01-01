@@ -11,7 +11,7 @@ http://shop37116146.taobao.com/
 
 #include "sccb.h"
 #include "main.h"
-#include "stm32f4xx_gpio.h"
+#include "stm32f4xx_exti.h"
 
 #define OV7670_REG_NUM  167
 

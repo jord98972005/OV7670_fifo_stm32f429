@@ -8,7 +8,7 @@ http://shop37116146.taobao.com/
 #include "Sensor.h"
 #include "Sensor_config.h"
 #include "misc.h"
-#include "stm32f4xx_syscfg.h"
+
 
 extern const char OV7670_reg[OV7670_REG_NUM][2];
 

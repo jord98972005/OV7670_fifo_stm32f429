@@ -63,7 +63,9 @@ int main(void)
 {
   /*Intialize the STM32 SYSTEM_Init */
   SystemInit();//main.c
-  LCD_firm_init();
+ // LCD_firm_init();
+  TM_ILI9341_Init();
+  TM_ILI9341_Rotate(TM_ILI9341_Orientation_Landscape_2);
 
   //LCD_SetDisplayWindow(0,319,320,240);
    //Set LCDBackground Layer  
@@ -71,13 +73,14 @@ int main(void)
   LCD_write_english_string(5,66,"GUANFU_WANG 2011-04015",0Xf800,0X0000);  //lcd.c*/
   FIFO_Set_GPIO_Config(); //fifo.c
   FIFO_GPIO_INPUT();  //fifo.c
-  FIFO_CS_L();  //fifo.h
-  FIFO_WE_H();  //fifo.h
-  //while(0!=Sensor_init());//鲁玫脢录禄炉CMOS Sensor sensor.c
-   
- TM_ILI9341_Puts(65, 130, "NCKU embedded 2015", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_GREEN2);
+  /*FIFO_CS_L();  //fifo.h
+  FIFO_WE_H();  //fifo.h*/
+  TM_ILI9341_Puts(65, 130, "ov7670 cmos set1", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_GREEN2);
+  while(0!=Sensor_init());//鲁玫脢录禄炉CMOS Sensor sensor.c
+  TM_ILI9341_Puts(65, 130, "ov7670 cmos set", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_GREEN2);
+ 
   //LCD_write_english_string(5,66+16,"CMOS Sensor Init...ok",0Xf800,0X0000);  //lcd.c
-  Sensor_EXTI_Config(); //VSYNC 脰脨露脧 Sensor.c
+  /*Sensor_EXTI_Config(); //VSYNC 脰脨露脧 Sensor.c
   Sensor_Interrupts_Config(); //VSYNC 脰脨露脧 Sensor.c
   bn=0;
  ////////////////////////////////////////
@@ -99,14 +102,14 @@ int main(void)
   {
     if(bn==2)
     {
-         /*LCD_WriteReg(0x0020,239);//GRAM水平起始位置 lcd.c
+         LCD_WriteReg(0x0020,239);//GRAM水平起始位置 lcd.c
         LCD_WriteReg(0x0021,319);      
          LCD_WriteReg(0x0050,0x00);//水平 GRAM起始位置
         LCD_WriteReg(0x0051,239);//水平GRAM终止位置
         LCD_WriteReg(0x0052,0x00);//垂直GRAM起始位置
         LCD_WriteReg(0x0053,319);//垂直GRAM终止位置 
         LCD_WriteReg(0x0003,0x1008);
-        LCD_WriteRAM_Prepare();  Prepare to write GRAM  lcd.c */
+        LCD_WriteRAM_Prepare();  Prepare to write GRAM  lcd.c 
         FIFO_RRST_L(); 
         FIFO_RD_L();
         FIFO_RD_H();
@@ -128,7 +131,7 @@ int main(void)
          }
          bn=0;
        }
-     }
+     }*/
 }
 
 
