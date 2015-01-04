@@ -8,6 +8,7 @@ SRCS=main.c \
 	fifo.c\
 	sccb.c\
 	delay.c\
+	stm32f4xx_it.c\
 	/home/jord98972005/stm32/ov76fifo/lcd/tm_stm32f4_fonts.c\
 	/home/jord98972005/stm32/ov76fifo/lcd/tm_stm32f4_ili9341.c\
 	/home/jord98972005/stm32/ov76fifo/lcd/tm_stm32f4_spi.c\
@@ -60,7 +61,7 @@ CFLAGS += -I/home/jord98972005/stm32/ov76fifo/lcd
 
 
 # add startup file to build
-SRCS += $(STM_COMMON)/Libraries/CMSIS//ST/STM32F4xx/Source/Templates/TrueSTUDIO/startup_stm32f429_439xx.s
+SRCS += $(STM_COMMON)/Libraries/CMSIS/ST/STM32F4xx/Source/Templates/TrueSTUDIO/startup_stm32f429_439xx.s
 OBJS = $(SRCS:.c=.o)
 
 

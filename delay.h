@@ -4,8 +4,8 @@ QQ:21578936
 *****************************************************/
 
 //—” ±≥Ã–Ú
-void delay_us(unsigned long time);
-
+#include <stdint.h>
+void delay_us(unsigned long Time);
 
 
 

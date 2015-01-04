@@ -354,6 +354,12 @@ extern void TM_ILI9341_DrawCircle(int16_t x0, int16_t y0, int16_t r, uint32_t co
  * - uint32_t color: circle color
  */
 extern void TM_ILI9341_DrawFilledCircle(int16_t x0, int16_t y0, int16_t r, uint32_t color);
-
+extern void TM_ILI9341_set_fifo_window(void);
+void TM_ILI9341_write_reg(uint8_t reg,uint8_t data);
+void TM_ILI9341_InitLCD(void);
+void TM_ILI9341_SendData(uint8_t data);
+void TM_ILI9341_SendCommand(uint8_t data);
+void TM_ILI9341_Delay(volatile unsigned int delay);
+void TM_ILI9341_SetCursorPosition(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2);
 #endif
 

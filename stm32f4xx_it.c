@@ -22,7 +22,7 @@
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-unsigned int  bn=0,c=0,a=0,c_data=0;
+unsigned int  bn=0,c=0,a=0;
 
 
 /* Private function prototypes -----------------------------------------------*/
@@ -90,7 +90,7 @@ void UsageFaultException(void)
 
 void EXTI3_IRQHandler(void)
 {
-     if(EXTI_GetITStatus(EXTI_LINE_VSYNC_CMOS) != RESET)
+     if(EXTI_GetITStatus(EXTI_Line3) != RESET)
      {  
        if(bn==0)
        {
@@ -107,7 +107,7 @@ void EXTI3_IRQHandler(void)
           FIFO_WE_L();
           bn=2;
        }
-       EXTI_ClearITPendingBit(EXTI_LINE_VSYNC_CMOS);
+       EXTI_ClearITPendingBit(EXTI_Line3);
      }
    
   

@@ -3,42 +3,61 @@
 
 #include "stm32f4xx_gpio.h"
 
-#define SCCB_SIC_BIT     GPIO_Pin_2		  //  ((uint16_t)0x0004)  Pin 2 selected 
-#define SCCB_SID_BIT    GPIO_Pin_4	 //GPIO_Pin_3		 //   (uint16_t)0x0008)   Pin 3 selected 
+
+#define SCCBID_7670                           0x42                                                 //OV7670的ID
+
+#define SCCB_SCL_BIT     GPIO_Pin_2	  //  ((uint16_t)0x0004)  Pin 2 selected 
+#define SCCB_SDA_BIT    GPIO_Pin_3	 //GPIO_Pin_3		 //   (uint16_t)0x0008)   Pin 3 selected 
 
 
-#define SCCB_SIC_H()     GPIOD->BSRRH = SCCB_SIC_BIT;//stm32f4xx.h
+#define SCL_H	GPIO_SetBits(GPIOE,SCCB_SCL_BIT)		//stm32f4xx.h
 /*!< GPIO port bit set/reset high register, Address offset: 0x1A      */
-#define SCCB_SIC_L()     GPIOD->BSRRL =  SCCB_SIC_BIT;
+#define SCL_L     GPIO_ResetBits(GPIOE,SCCB_SCL_BIT)
   /*!< GPIO port bit set/reset low register,  Address offset: 0x18      */
 
 
-#define SCCB_SID_H()     GPIOD->BSRRH = SCCB_SID_BIT;
+#define SDA_H       GPIO_SetBits(GPIOE,SCCB_SDA_BIT)
 /*!< GPIO port bit set/reset high register, Address offset: 0x1A      */
-#define SCCB_SID_L()     GPIOD->BSRRL =  SCCB_SID_BIT;
+#define SDA_L      GPIO_ResetBits(GPIOE,SCCB_SDA_BIT)
   /*!< GPIO port bit set/reset low register,  Address offset: 0x18      */
 
+//#define SCCB_SDA_IN      SCCB_SID_GPIO_INPUT();
+//#define SCCB_SDA_OUT     SCCB_SID_GPIO_OUTPUT();
 
-#define SCCB_SID_IN      SCCB_SID_GPIO_INPUT();
-#define SCCB_SID_OUT     SCCB_SID_GPIO_OUTPUT();
-
-
-
-#define SCCB_SID_STATE	 GPIOD->IDR&0x10
+#define SDA_read	 GPIOE->IDR&GPIO_Pin_3           //GPIO_Pin_3 =0x08
+#define SCL_read	 GPIOE->IDR&GPIO_Pin_2           //GPIO_Pin_3 =0x08
  /*!< GPIO port input data register,         Address offset: 0x10      */
 
 
-///////////////////////////////////////////
-void SCCB_GPIO_Config(void);
+////////////////////////////////////////////
+/*void SCCB_GPIO_Config(void);
+
 void SCCB_SID_GPIO_OUTPUT(void);
 void SCCB_SID_GPIO_INPUT(void);
+//void startSCCB(void);
 void startSCCB(void);
 void stopSCCB(void);
 void noAck(void);
 unsigned char SCCBwriteByte(unsigned char m_data);
-unsigned char SCCBreadByte(void);
+unsigned char SCCBreadByte(void);*/
+void I2C_Configuration(void);
+int I2C_WriteByte( uint16_t WriteAddress , uint8_t SendByte , uint8_t DeviceAddress);
+int I2C_ReadByte(uint8_t* pBuffer,   uint16_t length,   uint16_t ReadAddress,  uint8_t DeviceAddress);
+
+/*************************************************roman joe*/
+
+/*#define i2c_dev I2C2
+ void Delay(uint32_t volatile DelayTime_uS);
+ void I2C_start(I2C_TypeDef* I2Cx, uint8_t address, uint8_t direction);
+ void I2C_write(I2C_TypeDef* I2Cx, uint8_t data);
+ uint8_t I2C_read_ack(I2C_TypeDef* I2Cx);
+ uint8_t I2C_read_nack(I2C_TypeDef* I2Cx);
+ void I2C_stop(I2C_TypeDef* I2Cx);
+ uint8_t I2C_writereg(uint32_t reg, uint32_t data);
+ uint8_t I2C_readreg(uint32_t reg);*/
 
 
-#endif /* _IIC_H */
+/*************************************************roman joe*/
+
 
 

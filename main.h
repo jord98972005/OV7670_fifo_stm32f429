@@ -15,7 +15,7 @@ http://shop37116146.taobao.com/
 #include "stm32f4xx_conf.h"
 //#include "stm32f429i_discovery_lcd.h"
 
-#define LCD_RAM              (*((volatile unsigned short *) 0x6c000002)) /* RS = 1 */
+//#define LCD_RAM              (*((volatile unsigned short *) 0x6c000000)) /* RS = 1 */
 
 void SYSTEM_Init(void);	
 void RCC_Config(void);

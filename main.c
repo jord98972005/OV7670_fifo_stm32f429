@@ -1,10 +1,4 @@
 
-/*
-wangguanfu@163.com
-QQ:21578936
-脦麓戮颅鹿媒卤戮脠脣脨铆驴脡陆没脰鹿脠脦潞脦脡脤脪碌脫脙脥戮
-http://shop37116146.taobao.com/
-*/
 /**************************************************************/
 #include "stm32f4xx.h"
 #include "tm_stm32f4_ili9341.h"
@@ -17,20 +11,27 @@ volatile int32_t dma_handler_counter = 0;
 static volatile ErrorStatus HSEStartUpStatus = SUCCESS;
 __IO uint32_t TimingDelay;
 static volatile uint32_t SELStatus = 0;
-extern unsigned int  a, bn,c_data;
-unsigned int  kkk=0,s=0;
+extern unsigned int  a, bn;
+uint16_t CMOS_data_H=0;
+uint16_t CMOS_data_L=0;
+/*unsigned int  kkk=0,s=0;
+uint32_t redtable[256];
+uint32_t greentable[256];
+uint8_t bluetable[256];
+uint32_t bitarray[2400];
+uint16_t iluminacion;*/
 
-//NVIC_InitTypeDef NVIC_InitStructure;
+/*NVIC_InitTypeDef NVIC_InitStructure;
  
-//#define BufferSize  6400
- //unsigned int Buffer[2][BufferSize]={0};
+#define BufferSize  6400
+ unsigned int Buffer[2][BufferSize]={0};
 
- /*
+ 
   void my_DMA(char a)
  {
     DMA_InitTypeDef    DMA_InitStructure;
    DMA_DeInit(DMA2_Channel5);
-  DMA_InitStructure.DMA_PeripheralBaseAddr = 0X6C000002;
+  DMA_InitStructure.DMA_PeripheralBaseAddr = 0X6C000000;
   if(a==0)DMA_InitStructure.DMA_MemoryBaseAddr = (u32)Buffer[0][0];    
    if(a==1)DMA_InitStructure.DMA_MemoryBaseAddr = (u32)Buffer[1][0];  
   DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralDST;
@@ -47,8 +48,8 @@ unsigned int  kkk=0,s=0;
   DMA_Cmd(DMA2_Channel5, ENABLE);
   while(!DMA_GetFlagStatus(DMA2_FLAG_TC5));
   DMA_ClearFlag(DMA2_FLAG_TC5);
- }
- */
+ }*/
+ 
 
 /*******************************************************************************
 * Function Name  : main
@@ -63,75 +64,128 @@ int main(void)
 {
   /*Intialize the STM32 SYSTEM_Init */
   SystemInit();//main.c
- // LCD_firm_init();
+//  SysTick_Init();
+
   TM_ILI9341_Init();
   TM_ILI9341_Rotate(TM_ILI9341_Orientation_Landscape_2);
 
-  //LCD_SetDisplayWindow(0,319,320,240);
-   //Set LCDBackground Layer  
- /* LCD_write_english_string(5,66+16,"CMOS Sensor Init.....",0Xf800,0X0000);  //lcd.c
-  LCD_write_english_string(5,66,"GUANFU_WANG 2011-04015",0Xf800,0X0000);  //lcd.c*/
-  FIFO_Set_GPIO_Config(); //fifo.c
-  FIFO_GPIO_INPUT();  //fifo.c
-  /*FIFO_CS_L();  //fifo.h
-  FIFO_WE_H();  //fifo.h*/
-  TM_ILI9341_Puts(65, 130, "ov7670 cmos set1", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_GREEN2);
-  while(0!=Sensor_init());//鲁玫脢录禄炉CMOS Sensor sensor.c
-  TM_ILI9341_Puts(65, 130, "ov7670 cmos set", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_GREEN2);
- 
-  //LCD_write_english_string(5,66+16,"CMOS Sensor Init...ok",0Xf800,0X0000);  //lcd.c
-  /*Sensor_EXTI_Config(); //VSYNC 脰脨露脧 Sensor.c
-  Sensor_Interrupts_Config(); //VSYNC 脰脨露脧 Sensor.c
+ //Cam_init();
+   
+  //FIFO_Set_GPIO_Config(); //fifo.c
+  //FIFO_GPIO_INPUT();  //fifo.c
+  FIFO_CS_L();  //fifo.h
+  FIFO_WE_H();  //fifo.h
+  
+  while(1!=Cam_init());
+  
+  Sensor_EXTI_Config(); 
+  Sensor_Interrupts_Config(); 
+  
+   //TM_ILI9341_Puts(20, 140, "FIFO set", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_GREEN2);
   bn=0;
- ////////////////////////////////////////
+ /*FIFO reset*/
   FIFO_RRST_L();  //fifo.h
   FIFO_RD_L();  //fifo.h
   FIFO_RD_H();  //fifo.h
   FIFO_RD_L();  //fifo.h
   FIFO_RRST_H();  //fifo.h
   FIFO_RD_H();  //fifo.h
-  for(a=0;a<76800;a++)
+
+ /* for(a=0;a<76800;a++)
    {
        FIFO_RD_L(); ; //fifo.h
        FIFO_RD_H();   //fifo.h
        FIFO_RD_L(); //fifo.h
        FIFO_RD_H();   //fifo.h
-  }
+  }*/
+ // TM_ILI9341_Puts(20, 160, "FIFO set", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_GREEN2);
+ 
   ////////////////////////////////////////
   while(1)
   {
-    if(bn==2)
+    //_Bool bitaux;
+    //int16_t j;
+   // int16_t i;
+   // uint16_t red;
+    //uint16_t green;
+    //uint16_t blue; 
+
+    //if(bn==2)   //vsync==2
     {
-         LCD_WriteReg(0x0020,239);//GRAM水平起始位置 lcd.c
-        LCD_WriteReg(0x0021,319);      
-         LCD_WriteReg(0x0050,0x00);//水平 GRAM起始位置
-        LCD_WriteReg(0x0051,239);//水平GRAM终止位置
-        LCD_WriteReg(0x0052,0x00);//垂直GRAM起始位置
-        LCD_WriteReg(0x0053,319);//垂直GRAM终止位置 
-        LCD_WriteReg(0x0003,0x1008);
-        LCD_WriteRAM_Prepare();  Prepare to write GRAM  lcd.c 
+        /*set FIFO window 239*319 */
+        //
         FIFO_RRST_L(); 
         FIFO_RD_L();
         FIFO_RD_H();
         FIFO_RD_L();
         FIFO_RRST_H();
         FIFO_RD_H();
-        for(a=0;a<76800;a++)
-        {
+        //TM_ILI9341_set_fifo_window();
+        TM_ILI9341_SetCursorPosition(0, 0, 319, 239);
+        TM_ILI9341_SendCommand(ILI9341_GRAM);
 
-             FIFO_RD_L(); ;
-             c_data=GPIOB->IDR&0xff00;//读高位
-             FIFO_RD_H(); 
-             FIFO_RD_L();
-             c_data|=(GPIOB->IDR>>8)&0x00ff;//读低位
-             FIFO_RD_H();  
-            // LCD_WriteRAM(c_data);//写RGB数据到TFT GRAM
-             LCD_RAM=c_data;
-          
+//TM_ILI9341_Puts(20, 120, &SCCB_SID_STATE, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_GREEN2);
+
+    for(a=0;a<76800;a++)
+        {
+    /* for( j = 0; j<1; j++ )
+{
+for( i = 0; i<1;i++) //two loops that are equal to one loop of 76800 iterations
+        {*/
+		//TM_ILI9341_SendCommand(ILI9341_GRAM);
+                 FIFO_RD_L(); ;
+                CMOS_data_H=(GPIOE->IDR>>8);
+                
+                FIFO_RD_H(); 
+                FIFO_RD_L();
+                CMOS_data_L=(GPIOE->IDR)&0xff;
+               
+                FIFO_RD_H();  
+                 TM_ILI9341_SendData(CMOS_data_H);
+                 TM_ILI9341_SendData(CMOS_data_L);
+
+               
+                //TM_ILI9341_Puts(0, 0, &CMOS_data, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_GREEN2);
+                // LCD_WriteRAM(CMOS_data);
+                // TM_ILI9341_DrawPixel(a,a,ILI9341_COLOR_RED);
+                /* set RGB channel */
+               // blue=(CMOS_data &0x001f)<<1;//only blue channel
+              //  red=(CMOS_data&0xf800)>>10;//only red channel;//only blue channel
+               // green=(CMOS_data&0x07e0)>>5;
+             
+
+                //set iluminacion 
+             //   iluminacion=red+green+blue; 
+
+              /*if(iluminacion<24)// if ilumination is too low i discard data
+              {
+                     red=64;
+                     green=64;
+                    //blue=64;
+              }
+              else
+              {   
+                 red=(red<<8)/iluminacion;
+                green=(green<<8)/iluminacion;
+    //          blue=(blue<<8)/iluminacion;
+               }
+
+             bitaux=(redtable[red])&&(greentable[green]);
+
+            //if(((GPIOG->IDR )==0)&&(bitaux))//if i press a button i dump image to usart to the LABView grabberif 
+
+            CMOS_data=ILI9341_COLOR_MAGENTA;      //this is useful if you want to visualize the segmentation pixels are painted blue
+            bitarray[j]|=(bitaux<<i);//i create a "boolean image" stored in "bitarray" a variable consisting of 
+                        //2400 spaces of 32bit-data, each BIT is each pixel of the segmentation*/
+            //LCD_RAM=CMOS_data;
+          //  TM_ILI9341_DrawPixel(j,i,red);
+            //LCD_SetColorKeying(CMOS_data);
+           //TM_ILI9341_write_reg(0x2C, blue);
          }
          bn=0;
-       }
-     }*/
+       //}
+     }
+  }
 }
 
 
@@ -221,10 +275,16 @@ void SYSTEM_Init(void)
 
 void SysTick_Init(void)
 {
-    if (SysTick_Config(SystemCoreClock / 100))  //SysTick end of count event each 10ms 
+	/****************************************
+	 *SystemFrequency/1000      1ms中断一次  *
+	 *SystemFrequency/100000    10us中断一次 *
+	 *SystemFrequency/1000000   1us中断一次  *
+	 *****************************************/
+   /* if (SysTick_Config(SystemCoreClock / 1000000))  //SysTick end of count event each 10ms 
     { 
-        while (1); //鍒濆鍖栧け璐
-    }
+        while (1);
+    }*/
+         while(SysTick_Config(SystemCoreClock/1000000)!=0);    //设置系统节拍时钟为1us中断一次
 }
 
 
@@ -294,6 +354,7 @@ void assert_failed(uint8_t* file, uint32_t line)
 }
 #endif
 
+
 /*void LCD_all_init(void){
   Initialize the LCD 
   LCD_Init();
@@ -335,11 +396,11 @@ void LCD_firm_init(void)
     
     //Put string with black foreground color and blue background with 11x18px font
    TM_ILI9341_Puts(65, 130, "NCKU embedded 2015", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_GREEN2);
-
-   
     
     while (1) {
         
     }
 
 }
+
+

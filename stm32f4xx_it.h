@@ -14,8 +14,8 @@
 *******************************************************************************/
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __STM32F10x_IT_H
-#define __STM32F10x_IT_H
+#ifndef __STM32F4xx_IT_H
+#define __STM32F4xx_IT_H
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_conf.h"

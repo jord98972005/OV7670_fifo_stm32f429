@@ -24,11 +24,7 @@ uint16_t ILI9341_y;
 TM_ILI931_Options_t ILI9341_Opts;
 uint8_t ILI9341_INT_CalledFromPuts = 0;
 
-void TM_ILI9341_InitLCD(void);
-void TM_ILI9341_SendData(uint8_t data);
-void TM_ILI9341_SendCommand(uint8_t data);
-void TM_ILI9341_Delay(volatile unsigned int delay);
-void TM_ILI9341_SetCursorPosition(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2);
+
 
 void TM_ILI9341_Init() {
 	GPIO_InitTypeDef GPIO_InitDef;
@@ -196,7 +192,7 @@ void TM_ILI9341_DrawPixel(uint16_t x, uint16_t y, uint32_t color) {
 	TM_ILI9341_SendData(color & 0xFF);
 }
 
-
+//set cursor from (x1,y1) to (x2,y2)
 void TM_ILI9341_SetCursorPosition(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2) {
 	TM_ILI9341_SendCommand(ILI9341_COLUMN_ADDR);
 	TM_ILI9341_SendData(x1 >> 8);
@@ -434,3 +430,13 @@ void TM_ILI9341_DrawFilledCircle(int16_t x0, int16_t y0, int16_t r, uint32_t col
     }
 }
 
+void TM_ILI9341_set_fifo_window(void)
+{
+  	TM_ILI9341_SetCursorPosition(0, 0, 239, 319);
+           TM_ILI9341_SendCommand(ILI9341_GRAM);
+}
+void TM_ILI9341_write_reg(uint8_t reg,uint8_t data){
+	 TM_ILI9341_SendCommand(reg);
+	 TM_ILI9341_SendData(data>>8);
+	 TM_ILI9341_SendData(data&0xFF);
+}
