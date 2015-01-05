@@ -119,7 +119,7 @@ while (DMA_GetCmdStatus(DMA_CameraToRAM_Stream) != DISABLE)
 	DMA_Init(DMA_CameraToRAM_Stream, &DMA_InitStructure);
 
 
- if( 0 == I2C_WriteByte ( 0x12, 0x80 , SCCBID_7670 ) ) /* Reset SCCB */
+ /*if( 0 == I2C_WriteByte ( 0x12, 0x80 , SCCBID_7670 ) ) // Reset SCCB 
   {
   	TM_ILI9341_Puts(20, 20, "0x12 wrong", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_GREEN2);
      return 0 ;
@@ -135,9 +135,24 @@ while (DMA_GetCmdStatus(DMA_CameraToRAM_Stream) != DISABLE)
 	 	TM_ILI9341_Puts(20, 140, "FIFOddddd set", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_GREEN2);
 		return 0;
 	 }
-  }
+  }*/
+	//uint8_t temp;
+if(SCCB_WR_Reg(0x12,0x80))return 1;	//复位SCCB	  
+	delay_us(50000); 
+	//读取产品型号
+ 	/*temp=SCCB_RD_Reg(0x0b);   
+	if(temp!=0x73)return 2;  
+ 	temp=SCCB_RD_Reg(0x0a);   
+	if(temp!=0x76)return 2;
+	//初始化序列	  
+	for(i=0;i<sizeof(ov7670_init_reg_tbl)/sizeof(ov7670_init_reg_tbl[0]);i++)
+	{
+	   	SCCB_WR_Reg(ov7670_init_reg_tbl[i][0],ov7670_init_reg_tbl[i][1]);
+		delay_ms(2);
+ 	}*/
+   	return 0x00; 	//ok
 
-  return 1; 
+  //return 1; 
 
 }
 

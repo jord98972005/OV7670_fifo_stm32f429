@@ -59,5 +59,9 @@ int I2C_ReadByte(uint8_t* pBuffer,   uint16_t length,   uint16_t ReadAddress,  u
 
 /*************************************************roman joe*/
 
-
+uint8_t SCCB_WR_Reg(uint8_t reg,uint8_t data);
+uint8_t SCCB_WR_Byte(uint8_t dat);
+void SCCB_SID_GPIO_OUTPUT(void);
+void SCCB_SID_GPIO_INPUT(void);
+#endif 
 

@@ -141,8 +141,8 @@ for( i = 0; i<1;i++) //two loops that are equal to one loop of 76800 iterations
                 CMOS_data_L=(GPIOE->IDR)&0xff;
                
                 FIFO_RD_H();  
-                 TM_ILI9341_SendData(CMOS_data_H);
-                 TM_ILI9341_SendData(CMOS_data_L);
+                 //TM_ILI9341_SendData(CMOS_data_H);
+                 //TM_ILI9341_SendData(CMOS_data_L);
 
                
                 //TM_ILI9341_Puts(0, 0, &CMOS_data, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_GREEN2);
